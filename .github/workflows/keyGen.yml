@@ -3,8 +3,8 @@ on:
   workflow_dispatch
 
 env: 
-  keypathRsa: "$env.USERPROFILE\\.ssh\\new_key_rsa"
-  keypathEd: "$env.USERPROFILE\\.ssh\\new_key_ed"
+  keypathRsa: $env.USERPROFILE\.ssh\new_key_rsa
+  keypathEd: $env.USERPROFILE\.ssh\new_key_ed
 
 jobs:
   create-and-display-ssh-key:
