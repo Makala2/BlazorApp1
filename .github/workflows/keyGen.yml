@@ -14,8 +14,8 @@ jobs:
       - name: print home dir
         run: |
           Write-Host $home
-          echo keypathRsa
-          echo keypathEd
+          echo ${{ keypathRsa }}
+          echo ${{ keypathEd }}
       
 #      - name: Install SSH Key
 #        run: |
