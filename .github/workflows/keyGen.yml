@@ -4,8 +4,8 @@ on:
 
 env:
   home: $home
-  keypathRsa: "${{ $home  }}\\.ssh\\new_key_rsa"
-  keypathEd: "${{ $home  }}\\.ssh\\new_key_ed"
+  keypathRsa: $home\.ssh\\new_key_rsa
+  keypathEd: $home\.ssh\\new_key_ed
 
 jobs:
   display-home-dir: 
