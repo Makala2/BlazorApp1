@@ -3,16 +3,19 @@ on:
   workflow_dispatch
 
 #env: 
-#  keypathRsa: $env.USERPROFILE\.ssh\new_key_rsa
-#  keypathEd: $env.USERPROFILE\.ssh\new_key_ed
+#  keypathRsa: {{ $home  }}\.ssh\new_key_rsa
+#  keypathEd: {{ $home  }}\.ssh\new_key_ed
 
 jobs:
   display-home-dir: 
 #  create-and-display-ssh-key:
     runs-on: [ self-hosted, Windows, X64 ]
     steps:
-      - name: pring home dir
-        run: echo $env.USERPROFILE
+      - name: print home dir
+        run: |
+          Write-Host $home
+          echo keypathRsa
+          echo keypathEd
       
 #      - name: Install SSH Key
 #        run: |
