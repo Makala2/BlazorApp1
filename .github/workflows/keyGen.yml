@@ -4,8 +4,8 @@ on:
 
 env:
   home: $home
-  keypathRsa: $home\.ssh\\new_key_rsa
-  keypathEd: $home\.ssh\\new_key_ed
+  keypathRsa: $home\.ssh\new_key_rsa
+  keypathEd: $home\.ssh\new_key_ed
 
 jobs:
   display-home-dir: 
@@ -18,9 +18,15 @@ jobs:
           Write-Host ${{ env.keypathRsa }}
           Write-Host ${{ env.keypathEd }}
       
-#      - name: Install SSH Key
-#        run: |
-#          ssh-keygen -t rsa -b 4096 -q -N "" -f ${{ env. keypathRsa }}
-#          ssh-keygen -t ed25519 -N '""' -f ${{ env.keypathEd }}
+      - name: Install SSH Key
+        run: |
+         ssh-keygen -t rsa -b 4096 -q -N "" -f ${{ env. keypathRsa }}
+         ssh-keygen -t ed25519 -N '""' -f ${{ env.keypathEd }}
+         Write-Host ${{ env.keypathRsa }}
+         Write-Host ${{ env.keypathEd }}
+         Write-Host "The private rsa key is ${{ env.keypathRsa }}\\id_rsa"
+         Write-Host "The public rsa key is ${{ env.keypathRsa }}\\id_rsa.pub"
+         Write-Host "The private Ed key is ${{ env.keypathRsa }}\\id_ed25519"
+         Write-Host "The public rsa key is ${{ env.keypathRsa }}\\id_ed25519.pub"
   
   
