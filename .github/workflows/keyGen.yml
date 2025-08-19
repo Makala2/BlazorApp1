@@ -2,9 +2,10 @@ name: Configure SSH key
 on:
   workflow_dispatch
 
-#env: 
-#  keypathRsa: {{ $home  }}\.ssh\new_key_rsa
-#  keypathEd: {{ $home  }}\.ssh\new_key_ed
+env:
+  home: $home
+  keypathRsa: "{{ $home  }}\\.ssh\new_key_rsa"
+  keypathEd: "{{ $home  }}\\.ssh\new_key_ed"
 
 jobs:
   display-home-dir: 
@@ -13,9 +14,9 @@ jobs:
     steps:
       - name: print home dir
         run: |
-          Write-Host $home
-          echo ${{ keypathRsa }}
-          echo ${{ keypathEd }}
+          Write-Host ${{ env.home }}
+          echo ${{ env.keypathRsa }}
+          echo ${{ env.keypathEd }}
       
 #      - name: Install SSH Key
 #        run: |
