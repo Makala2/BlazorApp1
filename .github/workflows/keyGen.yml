@@ -24,7 +24,7 @@ jobs:
         shell: pwsh
         run: |
           echo ${{ steps.secpass.outputs.password }}
-          echo "cred=$(New-Object -typename System.Management.Automation.PSCredential -argumentlist tansatech\administrator, ${{ steps.secpass.outputs.password }})" >> $env:GITHUB_OUTPUT
+          echo "cred=$(New-Object System.Management.Automation.PSCredential(${{ secrets.USER }}, $[ steps.secpass.outputs.password ])" >> $env:GITHUB_OUTPUT
         env:
             PSSWRD: ${{ steps.secpass.outputs.password }}
             CRED: ${{ steps.vars.outputs.cred }}
