@@ -24,14 +24,9 @@ jobs:
         shell: pwsh
         run: |
           echo ${{ steps.secpass.outputs.password }}
-          echo "cred=$(New-Object System.Management.Automation.PSCredential("thisuser", (ConvertTo-SecureString "xyxyxyxy" -AsPlainText -Force)))" >> $env:GITHUB_OUTPUT
-        env:
-            PSSWRD: ${{ steps.secpass.outputs.password }}
-            CRED: ${{ steps.vars.outputs.cred }}
-            
-      - name: setup env variable
-        shell: pwsh
+          echo "cred=$(New-Object System.Management.Automation.PSCredential("tansatech\administrator", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force)))" >> $env:GITHUB_OUTPUT
+      
+      - name: Install SSH Key
         run: |
-          echo "env variable PSSWRD is ${{ steps.vars.outputs.password }}"
-          echo "env variable CRED is ${{ steps.vars.outputs.cred }}"
+          Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File ${{ env.script1  }} -Credential ${{ steps.vars.outputs.cred }} -PassThru | Wait-Process
         
