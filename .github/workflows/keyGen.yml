@@ -1,55 +1,31 @@
 name: Configure SSH key
-on:
-  workflow_dispatch
+on: workflow_dispatch
 
 env:
-  home: C:\Users\administrator\.ssh    #\.ssh\new_key_rsa
+  home: C:\Users\administrator\.ssh #\.ssh\new_key_rsa
   keypathRsa: C:\Users\administrator\.ssh\new_key_rsa
   keypathEd: C:\Users\administrator\.ssh\new_key_ed
+  script1: "ssh-keygen -t rsa -b 4096 -q -N \"\" -f C:\\Users\\Administrator\\.ssh\\new_key_rsa"
+  pwrsh: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+  password: ${{ secrets.PASSWORD }}
 
 jobs:
-  display-home-dir: 
-#  create-and-display-ssh-key:
-    runs-on: [ self-hosted, Windows, X64 ]
+  display-red:
+    #  create-and-display-ssh-key:
+    runs-on: [self-hosted, Windows, X64]
     steps:
-      - name: print home dir
+      - name: temp variables
+        id: vars
+        shell: pwsh
         run: |
-          Write-Host ${{ env.home }}
-          Write-Host ${{ env.keypathRsa }}
-          Write-Host ${{ env.keypathEd }}
-      
-      - name: Install SSH Key
-        run: |
-         cd ${{ env.home }}
-         ssh-keygen -t rsa -b 4096 -q -N "" -f ${{ env. keypathRsa }}
-         #Start-Process -FilePath "C:\Windows\System32\OpenSSH\ssh-keygen.exe" -ArgumentList "-t rsa -b 4096 -q -N '""' -f ${{ env. keypathRsa }}" -Verb RunAs -Credential (Get-Credential -UserName administrator)
-         ssh-keygen -t ed25519 -q -N '""' -f ${{ env.keypathEd }}
-         #Start-Process -FilePath "C:\Windows\System32\OpenSSH\ssh-keygen.exe" -ArgumentList "-t ed25519 -q -N '""' -f ${{ env.keypathEd }}" -Verb RunAs -Credential (Get-Credential -UserName administrator)         
-         Write-Host ${{ env.keypathRsa }}
-         Write-Host ${{ env.keypathEd }}
-         #Write-Host "The private rsa key is:" 
-         #Get-Content -Path ${{ env.keypathRsa }}
-         Write-Host "The public rsa key is:" 
-         Get-Content -Path ${{ env.keypathRsa }}.pub
-         #Write-Host "The private Ed key is:" 
-         #Get-Content -Path ${{ env.keypathEd }}
-         Write-Host "The public Ed key is:" 
-         Get-Content -Path ${{ env.keypathEd }}.pub
-         Get-Content -Path ${{ env.keypathRsa }}.pub | ssh administrator@192.168.0.121 "cat >> .ssh/authorized_keys"
+          echo "password=ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force" >> "$GITHUB_OUTPUT"
+          echo "cred=New-Object -typename System.Management.Automation.PSCredential -argumentlist tansatech\administrator, ${{ env.password }}" >> "$GITHUB_OUTPUT"
 
-      #- name: Move SSH Key
-      #  shell: cmd
-      #  run: |
-      #    cd ${{ env.home }}
-      #    ssh-copy-id Administrator@192.168.0.121
-      
-      - name: Execute remote ssh command
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          port: ${{ secrets.PORT }}
-          script: | #ssh -i ${{ env.home }} Administrator@192.168.0.121
-            iisreset /stop
-            iisreset /start
-  
+      - name: setup env variable
+        shell: pwsh
+        run: |
+          echo "env variable PSSWRD is $PSSWRD"
+          echo "env variable CRED is $CRED "
+        env:
+          PSSWRD: ${{ steps.vars.outputs.password }}
+          CRED: ${{ steps.vars.outputs.cred }}
