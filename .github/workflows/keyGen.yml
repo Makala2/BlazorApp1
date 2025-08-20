@@ -28,5 +28,5 @@ jobs:
       
       - name: Install SSH Key
         run: |
-          Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File ${{ env.script1  }}" -Credential ${{ steps.vars.outputs.cred }} -PassThru | Wait-Process
+          Start-Process -FilePath "powershell.exe" -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File ${{ env.script1  }}" -Credential ${{ steps.vars.outputs.cred }} -PassThru | Out-Null
         
