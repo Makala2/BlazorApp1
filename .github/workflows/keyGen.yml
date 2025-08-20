@@ -35,13 +35,13 @@ jobs:
          #Get-Content -Path ${{ env.keypathEd }}
          Write-Host "The public Ed key is:" 
          Get-Content -Path ${{ env.keypathEd }}.pub
-         #Get-Content -Path ${{ env.keypathRsa }}.pub | ssh administrator@192.168.0.121 "mkdir -p .ssh && tee .ssh/authorized_keys"
+         Get-Content -Path ${{ env.keypathRsa }}.pub | ssh administrator@192.168.0.121 "cat >> .ssh/authorized_keys"
 
-      - name: Move SSH Key
-        shell: cmd
-        run: |
-          cd ${{ env.home }}
-          ssh-copy-id Administrator@192.168.0.121
+      #- name: Move SSH Key
+      #  shell: cmd
+      #  run: |
+      #    cd ${{ env.home }}
+      #    ssh-copy-id Administrator@192.168.0.121
       
       - name: Execute remote ssh command
         uses: appleboy/ssh-action@v1
