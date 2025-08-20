@@ -20,9 +20,11 @@ jobs:
       
       - name: Install SSH Key
         run: |
-         cd ${{ env.home }}
-         ssh-keygen -t rsa -b 4096 -q -N "" -f ${{ env. keypathRsa }}
-         ssh-keygen -t ed25519 -q -N '""' -f ${{ env.keypathEd }}
+         #cd ${{ env.home }}
+         #ssh-keygen -t rsa -b 4096 -q -N "" -f ${{ env. keypathRsa }}
+         Start-Process -FilePath "C:\Windows\System32\OpenSSH\ssh-keygen.exe" -ArgumentList "-t rsa -b 4096 -q -N '""' -f ${{ env. keypathRsa }}" -Verb RunAs -Credential (Get-Credential -UserName administrator)
+         #ssh-keygen -t ed25519 -q -N '""' -f ${{ env.keypathEd }}
+         Start-Process -FilePath "C:\Windows\System32\OpenSSH\ssh-keygen.exe" -ArgumentList "-t ed25519 -q -N '""' -f ${{ env.keypathEd }}" -Verb RunAs -Credential (Get-Credential -UserName administrator)         
          Write-Host ${{ env.keypathRsa }}
          Write-Host ${{ env.keypathEd }}
          #Write-Host "The private rsa key is:" 
