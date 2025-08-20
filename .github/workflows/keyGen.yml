@@ -22,14 +22,14 @@ jobs:
         run: |
          ssh-keygen -t rsa -b 4096 -q -N "" -f ${{ env. keypathRsa }}
          ssh-keygen -t ed25519 -q -N '""' -f ${{ env.keypathEd }}
-         Write-Host ${{ env.keypathRsa }}
-         Write-Host ${{ env.keypathEd }}
-         Write-Host "The private rsa key is:" 
-         Get-Content -Path ${{ env.keypathRsa }}
+         #Write-Host ${{ env.keypathRsa }}
+         #Write-Host ${{ env.keypathEd }}
+         #Write-Host "The private rsa key is:" 
+         #Get-Content -Path ${{ env.keypathRsa }}
          Write-Host "The public rsa key is:" 
          Get-Content -Path ${{ env.keypathRsa }}.pub
-         Write-Host "The private Ed key is:" 
-         Get-Content -Path ${{ env.keypathEd }}
+         #Write-Host "The private Ed key is:" 
+         #Get-Content -Path ${{ env.keypathEd }}
          Write-Host "The public Ed key is:" 
          Get-Content -Path ${{ env.keypathEd }}.pub
   
