@@ -33,7 +33,7 @@ jobs:
          #Get-Content -Path ${{ env.keypathEd }}
          Write-Host "The public Ed key is:" 
          Get-Content -Path ${{ env.keypathEd }}.pub
-         ssh-copy-id Administrator@192.168.0.121
+         type ${{ env.keypathRsa }}.pub | ssh Administrator@192.168.0.121 "mkdir -p .ssh && tee .ssh/authorized_keys"
          
       - name: Execute remote ssh command
         uses: appleboy/ssh-action@v1
