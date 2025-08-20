@@ -17,7 +17,7 @@ jobs:
       - name: secure password
         id: secpass
         shell: pwsh
-        run: echo "password=$(ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force)" >> $env:GITHUB_OUTPUT
+        run: echo "[SecureString] password=$(ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force)" >> $env:GITHUB_OUTPUT
         
       - name: temp variables
         id: vars
