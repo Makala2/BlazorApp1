@@ -20,12 +20,13 @@ jobs:
         run: |
           echo "password=ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force" >> "$GITHUB_OUTPUT"
           echo "cred=New-Object -typename System.Management.Automation.PSCredential -argumentlist tansatech\administrator, ${{ env.password }}" >> "$GITHUB_OUTPUT"
-
+        env:
+            PSSWRD: ${{ steps.vars.outputs.password }}
+            CRED: ${{ steps.vars.outputs.cred }}
+            
       - name: setup env variable
         shell: pwsh
         run: |
-          echo "env variable PSSWRD is $PSSWRD"
-          echo "env variable CRED is $CRED "
-        env:
-          PSSWRD: ${{ steps.vars.outputs.password }}
-          CRED: ${{ steps.vars.outputs.cred }}
+          echo "env variable PSSWRD is ${{ env.PSSWRD }}"
+          echo "env variable CRED is ${{ emv.CRED }}"
+        
