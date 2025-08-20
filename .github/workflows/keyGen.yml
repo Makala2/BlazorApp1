@@ -10,15 +10,20 @@ env:
   password: ${{ secrets.PASSWORD }}
 
 jobs:
-  display-red:
+  display-cred:
     #  create-and-display-ssh-key:
     runs-on: [self-hosted, Windows, X64]
     steps:
+      - name: secure password
+        id: secpass
+        shell: pwsh
+        run: echo "password=$(ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force)" >> $env:GITHUB_OUTPUT
+        
       - name: temp variables
         id: vars
         shell: pwsh
         run: |
-          echo "password=$(ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force)" >> $env:GITHUB_OUTPUT
+          echo ${{ steps.secpass.outputs.password }}
           echo "cred=$(New-Object -typename System.Management.Automation.PSCredential -argumentlist tansatech\administrator, ${{ steps.vars.outputs.password }})" >> $env:GITHUB_OUTPUT
         env:
             PSSWRD: ${{ steps.vars.outputs.password }}
