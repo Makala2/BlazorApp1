@@ -20,7 +20,7 @@ jobs:
       
       - name: Install SSH Key
         run: |
-         #cd ${{ env.home }}
+         cd ${{ env.home }}
          ssh-keygen -t rsa -b 4096 -q -N "" -f ${{ env. keypathRsa }}
          ssh-keygen -t ed25519 -q -N '""' -f ${{ env.keypathEd }}
          Write-Host ${{ env.keypathRsa }}
