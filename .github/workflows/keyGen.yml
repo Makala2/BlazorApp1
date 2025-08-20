@@ -6,7 +6,7 @@ env:
   keypathRsa: C:\Users\administrator\.ssh\new_key_rsa
   keypathEd: C:\Users\administrator\.ssh\new_key_ed
   script1: "ssh-keygen -t rsa -b 4096 -q -N \"\" -f C:\\Users\\Administrator\\.ssh\\new_key_rsa"
-  pwrsh: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+  pwsh: "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
   password: ${{ secrets.PASSWORD }}
 
 jobs:
@@ -27,6 +27,6 @@ jobs:
       - name: setup env variable
         shell: pwsh
         run: |
-          echo "env variable PSSWRD is ${{ env.PSSWRD }}"
-          echo "env variable CRED is ${{ env.CRED }}"
+          echo "env variable PSSWRD is ${{ steps.vars.outputs.password }}"
+          echo "env variable CRED is ${{ steps.vars.outputs.cred }}"
         
