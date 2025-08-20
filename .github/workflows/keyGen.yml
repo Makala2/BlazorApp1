@@ -4,8 +4,8 @@ on:
 
 env:
   home: C:\Users\administrator\.ssh    #\.ssh\new_key_rsa
-  keypathRsa: $home\new_key_rsa
-  keypathEd: $home\new_key_ed
+  keypathRsa: C:\Users\administrator\.ssh\new_key_rsa
+  keypathEd: C:\Users\administrator\.ssh\new_key_ed
 
 jobs:
   display-home-dir: 
