@@ -18,8 +18,8 @@ jobs:
         id: vars
         shell: pwsh
         run: |
-          echo "password=ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force" >> "$GITHUB_OUTPUT"
-          echo "cred=New-Object -typename System.Management.Automation.PSCredential -argumentlist tansatech\administrator, ${{ env.password }}" >> "$GITHUB_OUTPUT"
+          echo "password=ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force" >> $env:GITHUB_OUTPUT
+          echo "cred=New-Object -typename System.Management.Automation.PSCredential -argumentlist tansatech\administrator, ${{ env.password }}" >> $env:GITHUB_OUTPUT
         env:
             PSSWRD: ${{ steps.vars.outputs.password }}
             CRED: ${{ steps.vars.outputs.cred }}
