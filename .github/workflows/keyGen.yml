@@ -3,7 +3,7 @@ on:
   workflow_dispatch
 
 env:
-  home: C:\Users\Administrator\.ssh    #\.ssh\new_key_rsa
+  home: C:\Users\${{ secrets.USER }}\.ssh    #\.ssh\new_key_rsa
   keypathRsa: $home\new_key_rsa
   keypathEd: $home\new_key_ed
 
@@ -20,7 +20,7 @@ jobs:
       
       - name: Install SSH Key
         run: |
-         cd ${{ env.home }}
+         #cd ${{ env.home }}
          ssh-keygen -t rsa -b 4096 -q -N "" -f ${{ env. keypathRsa }}
          ssh-keygen -t ed25519 -q -N '""' -f ${{ env.keypathEd }}
          Write-Host ${{ env.keypathRsa }}
