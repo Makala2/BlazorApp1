@@ -3,9 +3,9 @@ on:
   workflow_dispatch
 
 env:
-  home: $home
-  keypathRsa: $home\.ssh\new_key_rsa
-  keypathEd: $home\.ssh\new_key_ed
+  home: C:\Users\Administrator\.ssh    #\.ssh\new_key_rsa
+  keypathRsa: $home\new_key_rsa
+  keypathEd: $home\new_key_ed
 
 jobs:
   display-home-dir: 
@@ -20,10 +20,11 @@ jobs:
       
       - name: Install SSH Key
         run: |
+         cd ${{ env.home }}
          ssh-keygen -t rsa -b 4096 -q -N "" -f ${{ env. keypathRsa }}
          ssh-keygen -t ed25519 -q -N '""' -f ${{ env.keypathEd }}
-         #Write-Host ${{ env.keypathRsa }}
-         #Write-Host ${{ env.keypathEd }}
+         Write-Host ${{ env.keypathRsa }}
+         Write-Host ${{ env.keypathEd }}
          #Write-Host "The private rsa key is:" 
          #Get-Content -Path ${{ env.keypathRsa }}
          Write-Host "The public rsa key is:" 
@@ -32,5 +33,15 @@ jobs:
          #Get-Content -Path ${{ env.keypathEd }}
          Write-Host "The public Ed key is:" 
          Get-Content -Path ${{ env.keypathEd }}.pub
-  
+         ssh-copy-id Administrator@192.168.0.121
+         
+      - name: Execute remote ssh command
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          port: ${{ secrets.PORT }}
+          script: | #ssh -i ${{ env.home }} Administrator@192.168.0.121
+            iisreset /stop
+            iisreset /start
   
