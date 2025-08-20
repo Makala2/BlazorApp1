@@ -24,9 +24,9 @@ jobs:
          ssh-keygen -t ed25519 -N '""' -f ${{ env.keypathEd }}
          Write-Host ${{ env.keypathRsa }}
          Write-Host ${{ env.keypathEd }}
-         Write-Host "The private rsa key is ${{ env.keypathRsa }}"
-         Write-Host "The public rsa key is ${{ env.keypathRsa }}.pub"
-         Write-Host "The private Ed key is ${{ env.keypathEd }}"
-         Write-Host "The public Ed key is ${{ env.keypathEd }}.pub"
+         Write-Host "The private rsa key is: \n" ${{ env.keypathRsa }}
+         Write-Host "The public rsa key is: \n" ${{ env.keypathRsa }}.pub
+         Write-Host "The private Ed key is: \n" ${{ env.keypathEd }}
+         Write-Host "The public Ed key is: \n" ${{ env.keypathEd }}.pub
   
   
