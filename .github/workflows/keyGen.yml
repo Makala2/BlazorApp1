@@ -24,10 +24,6 @@ jobs:
         shell: pwsh
         run: |
           echo ${{ steps.secpass.outputs.password }}
-          echo $[ steps.secpass.outputs.password ]
-          echo $(steps.secpass.outputs.password)
-          echo $steps.secpass.outputs.password
-          echo steps.secpass.outputs.password
           echo "cred=$(New-Object System.Management.Automation.PSCredential("thisuser", (ConvertTo-SecureString "xyxyxyxy" -AsPlainText -Force)))" >> $env:GITHUB_OUTPUT
         env:
             PSSWRD: ${{ steps.secpass.outputs.password }}
