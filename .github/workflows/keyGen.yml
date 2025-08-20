@@ -3,7 +3,7 @@ on:
   workflow_dispatch
 
 env:
-  home: C:\Users\${{ secrets.USER }}\.ssh    #\.ssh\new_key_rsa
+  home: C:\Users\administrator\.ssh    #\.ssh\new_key_rsa
   keypathRsa: $home\new_key_rsa
   keypathEd: $home\new_key_ed
 
@@ -33,7 +33,7 @@ jobs:
          #Get-Content -Path ${{ env.keypathEd }}
          Write-Host "The public Ed key is:" 
          Get-Content -Path ${{ env.keypathEd }}.pub
-         type ${{ env.keypathRsa }}.pub | ssh Administrator@192.168.0.121 "mkdir -p .ssh && tee .ssh/authorized_keys"
+         Get-Content -Path ${{ env.keypathRsa }}.pub | ssh administrator@192.168.0.121 "mkdir -p .ssh && tee .ssh/authorized_keys"
          
       - name: Execute remote ssh command
         uses: appleboy/ssh-action@v1
