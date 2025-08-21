@@ -1,0 +1,13 @@
+name: Configure SSH key
+on: workflow_dispatch
+
+jobs:
+  create-and-display-ssh-key:
+    runs-on: [self-hosted, Windows, X64]
+
+    steps:
+      - name: create local key
+        shell: pwsh
+        run: |
+          ssh-keygen -t rsa -b 4096 -q -N '""' -f "$HOME\.ssh\new_key_rsa"
+          Get-Content "$HOME\.ssh\new_key_rsa.pub"
