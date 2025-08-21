@@ -14,12 +14,12 @@ jobs:
     #  create-and-display-ssh-key:
     runs-on: [self-hosted, Windows, X64]
     steps:
-      - name: temp variables
-        id: vars
-        shell: pwsh
-        run: |
-          echo "password=ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force" >> "$GITHUB_OUTPUT"
-          echo "cred=New-Object -typename System.Management.Automation.PSCredential -argumentlist tansatech\administrator, ${{ secrets.PASSWORD }}" >> "$GITHUB_OUTPUT"
+      #- name: temp variables
+        #id: vars
+        #shell: pwsh
+        #run: |
+          #echo "password=ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force" >> "$GITHUB_OUTPUT"
+          #echo "cred=New-Object -typename System.Management.Automation.PSCredential -argumentlist tansatech\administrator, ${{ secrets.PASSWORD }}" >> "$GITHUB_OUTPUT"
           #Write-Host ${{ env.keypathEd }}
 
       - name: create ssh key
@@ -28,5 +28,5 @@ jobs:
           $pwsh = "C:\Program Files\PowerShell\7\pwsh.exe"
           $keygen = "D:\Temp\keygen.ps1" #ssh-keygen -t rsa -b 4096 -q -N '""' -f C:\Users\Administrator\.ssh\new_key_rsa
           $password = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
-          $cred = New-Object System.Management.Automation.PSCredential("tansatech\administrator", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
+          $cred = New-Object System.Management.Automation.PSCredential(${{ secrets.HOST }}, (ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force))
           Start-Process -WindowStyle Hidden -FilePath $pwsh -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $keygen" -Credential $cred -PassThru  | Out-Null
