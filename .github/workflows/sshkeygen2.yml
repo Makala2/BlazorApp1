@@ -10,5 +10,10 @@ jobs:
         shell: pwsh
         run: |
           Write-Host $HOME
-          #ssh-keygen -t rsa -b 4096 -q -N '""' -f "$HOME\.ssh\new_key_rsa"
-          #Get-Content "$HOME\.ssh\new_key_rsa.pub"
+          ssh-keygen -t ecdsa -q -N '""' -f "$HOME\.ssh\id_ecdsa"
+          Get-Content "$HOME\.ssh\id_ecdsa.pub"
+          Start-Service ssh-agent
+          ssh-add $env:USERPROFILE\.ssh\id_ecdsa
+          #$authorizedKey = Get-Content -Path $env:USERPROFILE\.ssh\id_ecdsa.pub
+          #$remotePowershell = "powershell New-Item -Force -ItemType Directory -Path $env:USERPROFILE\.ssh; Add-Content -Force -Path $env:USERPROFILE\.ssh\authorized_keys -Value '$authorizedKey'"
+          #ssh ${{ secrets.USER }}@${{ secrets.HOST }} $remotePowershell
