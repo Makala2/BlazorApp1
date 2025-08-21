@@ -9,5 +9,6 @@ jobs:
       - name: create local key
         shell: pwsh
         run: |
-          ssh-keygen -t rsa -b 4096 -q -N '""' -f "$HOME\.ssh\new_key_rsa"
-          Get-Content "$HOME\.ssh\new_key_rsa.pub"
+          Write-Host $HOME
+          #ssh-keygen -t rsa -b 4096 -q -N '""' -f "$HOME\.ssh\new_key_rsa"
+          #Get-Content "$HOME\.ssh\new_key_rsa.pub"
