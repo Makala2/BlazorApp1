@@ -1,0 +1,32 @@
+name: Configure SSH key
+on: workflow_dispatch
+
+env:
+  home: C:\Users\administrator\.ssh #\.ssh\new_key_rsa
+  keypathRsa: C:\Users\administrator\.ssh\new_key_rsa
+  keypathEd: C:\Users\administrator\.ssh\new_key_ed
+  script1: "ssh-keygen -t rsa -b 4096 -q -N \"\" -f C:\\Users\\Administrator\\.ssh\\new_key_rsa"
+  pwsh: "C:\\Program Files\\PowerShell\\7\\pwsh.exe"
+  password: ${{ secrets.PASSWORD }}
+
+jobs:
+  display-home-dir:
+    #  create-and-display-ssh-key:
+    runs-on: [self-hosted, Windows, X64]
+    steps:
+      #- name: temp variables
+        #id: vars
+        #shell: pwsh
+        #run: |
+          #echo "password=ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force" >> "$GITHUB_OUTPUT"
+          #echo "cred=New-Object -typename System.Management.Automation.PSCredential -argumentlist tansatech\administrator, ${{ secrets.PASSWORD }}" >> "$GITHUB_OUTPUT"
+          #Write-Host ${{ env.keypathEd }}
+
+      - name: create ssh key
+        shell: pwsh
+        run: |
+          $pwsh = "C:\Program Files\PowerShell\7\pwsh.exe"
+          $keygen = "D:\Temp\keygen.ps1" #ssh-keygen -t rsa -b 4096 -q -N '""' -f C:\Users\Administrator\.ssh\new_key_rsa
+          $password = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
+          $cred = New-Object System.Management.Automation.PSCredential(${{ secrets.HOST }}, (ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force))
+          Start-Process -WindowStyle Hidden -FilePath $pwsh -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File $keygen" -Credential $cred -PassThru  | Out-Null
