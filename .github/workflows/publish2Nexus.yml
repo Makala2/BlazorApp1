@@ -33,7 +33,12 @@ jobs:
 
     - name: copy to server
       shell: pwsh
-      run: Copy-Item -Path ".\nupkg\*.nupkg" -Destination "\\WINSERV1\Temp"
+      run: |
+        Import-Module bitstransfer
+        $cred = Get-Credential
+        $sourcePath = ".\nupkg\*.nupkg"
+        $destPath = "\\WINSERV1\Temp"
+        Start-BitsTransfer -Source $sourcePath -Destination $destPath -Credential $cred
 
     - name: Publish to Nexus
       run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
