@@ -26,14 +26,12 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: |
-        #New-Item -Path ".\build\" -ItemType Directory
-        dotnet build --configuration Release --no-restore #--ouput ".\build\"
+      run: dotnet build --configuration Release --no-restore        
 
     - name: publish
       run: |
           New-Item -Path ".\output\" -ItemType Directory
-          dotnet publish ".\BlazorApp1.csproj" -c Release -o ".\output\"
+          dotnet publish -c Release -o ".\output\"
           Compress-Archive -Path ".\output\" -DestinationPath ".\BlazorApp1.zip"
 
     #- name: Pack NuGet package
