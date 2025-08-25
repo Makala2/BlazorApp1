@@ -31,8 +31,8 @@ jobs:
     - name: publish
       run: |
           New-Item -Path ".\output\" -ItemType Directory
-          dotnet publish -c Release #-o ".\output\"
-          Compress-Archive -Path ".\bin\Release\net8.0\publish\*" -DestinationPath ".\BlazorApp1.zip"
+          dotnet publish -c Release -o ".\output\"
+          Compress-Archive -Path ".\output\*" -DestinationPath ".\BlazorApp1.zip"
 
     #- name: Pack NuGet package
     #  run: dotnet pack --configuration Release --no-build --output .\nupkg
