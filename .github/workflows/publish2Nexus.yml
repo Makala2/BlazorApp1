@@ -36,12 +36,15 @@ jobs:
       run: |
         Import-Module bitstransfer
         $cred = Get-Credential
+        Write-Host $cred
         $sourcePath = ".\nupkg\*.nupkg"
+        Write-Host $sourcePath
         $destPath = "\\WINSERV1\Temp"
-        Start-BitsTransfer -Source $sourcePath -Destination $destPath -Credential $cred
+        Write-Host $destPath
+        #Start-BitsTransfer -Source $sourcePath -Destination $destPath -Credential $cred
 
-    - name: Publish to Nexus
-      run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
+    #- name: Publish to Nexus
+    #  run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
       #env:
         # Use either username/password or an API key with the Nexus endpoint
         #NUGET_PUSH_API_KEY: 984cf249-86d5-3861-83e0-d690ca3e1a5c
