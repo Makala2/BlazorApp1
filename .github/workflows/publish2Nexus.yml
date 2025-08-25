@@ -32,7 +32,7 @@ jobs:
       run: |
           New-Item -Path ".\output\" -ItemType Directory
           dotnet publish -c Release #-o ".\output\"
-          Compress-Archive -Path "." -DestinationPath ".\BlazorApp1.zip"
+          Compress-Archive -Path ".\bin\Release\net8.0\publish\*" -DestinationPath ".\BlazorApp1.zip"
 
     #- name: Pack NuGet package
     #  run: dotnet pack --configuration Release --no-build --output .\nupkg
@@ -41,12 +41,10 @@ jobs:
       shell: pwsh
       run: |
         #Import-Module bitstransfer
-        $Session = New-PSSession -ComputerName "WinServ1" -Credential "tansatech\administrator"
-        $cred = Get-Credential
-        Write-Host $cred        
+        $Session = New-PSSession -ComputerName "WinServ1" -Credential "WinServ1\tchapda"       
         $sourcePath = ".\BlazorApp1.zip" #".\nupkg\"
         Write-Host $sourcePath
-        $destPath = "C:\Temp" #"D:\VirtualBox_VMs\Shared\"
+        $destPath = "C:\Temp\" #"D:\VirtualBox_VMs\Shared\"
         Write-Host $destPath
         Copy-Item $sourcePath -Destination $destPath -ToSession $Session
         #Start-BitsTransfer -Source $sourcePath -Destination $destPath #-Credential $cred
