@@ -30,7 +30,7 @@ jobs:
 
     - name: publish
       run: |
-          dotnet publish BlazorApp1.csproj -c Release -o .\publishOutput
+          dotnet publish BlazorApp1.csproj -c Release -o .\publishOutput\
           Compress-Archive -Path .\publishOutput\ -DestinationPath .\BlazorApp1.zip
 
     #- name: Pack NuGet package
