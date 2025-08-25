@@ -59,14 +59,16 @@ jobs:
     - name: deploy to iis
       shell: pwsh
       run: |
-        "Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\'" | Add-Content -Path ".\output\deploy.ps1"
-        "Stop-Service -Name 'WinServ1\W3SVC'" | Add-Content -Path D:\Temp\deploy2.ps1
+        "Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\'" | Add-Content -Path ".\output\deploy.ps1"        
+        "Stop-Service -Name 'W3SVC'" | Add-Content -Path D:\Temp\deploy2.ps1
         "Copy-Item 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Force" | Add-Content -Path ".\output\deploy.ps1"
-        "Start-Service -Name 'WinServ1\W3SVC'" | Add-Content -Path ".\output\deploy.ps1"
+        "Start-Service -Name 'W3SVC'" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\*.zip' -Force" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
         $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
-        Invoke-Command -ComputerName "WinServ1" -FilePath ".\output\deploy.ps1" -Credential $cred
+        $Session = New-PSSession -ComputerName "WinServ1" -Credential $cred
+        Invoke-Command -Session $Session -FilePath ".\output\deploy.ps1" -Credential $cred
+        #Invoke-Command -ComputerName "WinServ1" -FilePath ".\output\deploy.ps1" -Credential $cred
 
     #- name: Publish to Nexus
     #  run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
