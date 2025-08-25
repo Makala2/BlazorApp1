@@ -41,7 +41,8 @@ jobs:
       shell: pwsh
       run: |
         #Import-Module bitstransfer
-        $Session = New-PSSession -ComputerName "WinServ1" -Credential "WinServ1\tchapda"       
+        $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
+        $Session = New-PSSession -ComputerName "WinServ1" -Credential $cred       
         $sourcePath = ".\BlazorApp1.zip" #".\nupkg\"
         Write-Host $sourcePath
         $destPath = "C:\Temp\" #"D:\VirtualBox_VMs\Shared\"
