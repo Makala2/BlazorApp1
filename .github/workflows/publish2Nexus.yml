@@ -28,8 +28,13 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
 
-    - name: Pack NuGet package
-      run: dotnet pack --configuration Release --no-build --output .\nupkg
+    - name: publish
+      run: |
+          dotnet publish BlazorApp1.csproj -c Release -o .\publish_output
+          Compress-Archive -Path .\publish_output\* -DestinationPath .\BlazorApp1.zip
+
+    #- name: Pack NuGet package
+    #  run: dotnet pack --configuration Release --no-build --output .\nupkg
 
     - name: copy to server
       shell: pwsh
@@ -37,17 +42,17 @@ jobs:
         Import-Module bitstransfer
         $cred = Get-Credential
         Write-Host $cred        
-        $sourcePath = ".\nupkg\"
+        $sourcePath = .\BlazorApp1.zip #".\nupkg\"
         Write-Host $sourcePath
         $destPath = "D:\VirtualBox_VMs\Shared\"
         Write-Host $destPath
-        $password = ConvertTo-SecureString "Aime4274" -AsPlainText -Force
+        Start-BitsTransfer -Source $sourcePath -Destination $destPath #-Credential $cred
         $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
-        Get-ChildItem -Path $sourcePath -Filter *.nupkg | ForEach-Object { 
-          $package = $_.FullName
-          Write-Host $package
-          Start-BitsTransfer -Source $package -Destination $destPath #-Credential $cred
-        }
+        #Get-ChildItem -Path $sourcePath -Filter *.nupkg | ForEach-Object { 
+        #  $package = $_.FullName
+        #  Write-Host $package
+        #  Start-BitsTransfer -Source $package -Destination $destPath #-Credential $cred
+        #}
 
     #- name: Publish to Nexus
     #  run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
