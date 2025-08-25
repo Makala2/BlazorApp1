@@ -41,6 +41,8 @@ jobs:
         Write-Host $sourcePath
         $destPath = "\\WINSERV1\Temp\"
         Write-Host $destPath
+        $password = ConvertTo-SecureString "Aime4274" -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
         Get-ChildItem -Path $sourcePath -Filter *.nupkg | ForEach-Object { 
           $package = $_.FullName
           Write-Host $package
