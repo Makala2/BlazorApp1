@@ -36,12 +36,15 @@ jobs:
       run: |
         Import-Module bitstransfer
         $cred = Get-Credential
-        Write-Host $cred
-        $sourcePath = ".\nupkg\*.nupkg"
+        Write-Host $cred        
+        $sourcePath = ".\nupkg\"
         Write-Host $sourcePath
         $destPath = "\\WINSERV1\Temp"
         Write-Host $destPath
-        #Start-BitsTransfer -Source $sourcePath -Destination $destPath -Credential $cred
+        Get-ChildItem -Path $sourcePath -Filter *.nupkg | ForEach-Object { 
+          $package = $_.FullName
+          Start-BitsTransfer -Source $package -Destination $destPath -Credential $cred
+        }
 
     #- name: Publish to Nexus
     #  run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
