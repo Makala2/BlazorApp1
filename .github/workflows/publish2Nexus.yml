@@ -43,6 +43,7 @@ jobs:
         Write-Host $destPath
         Get-ChildItem -Path $sourcePath -Filter *.nupkg | ForEach-Object { 
           $package = $_.FullName
+          Write-Host $package
           Start-BitsTransfer -Source $package -Destination $destPath -Credential $cred
         }
 
