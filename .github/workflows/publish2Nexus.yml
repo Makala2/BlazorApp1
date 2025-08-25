@@ -59,10 +59,12 @@ jobs:
     - name: deploy to iis
       shell: pwsh
       run: |
-        "Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\'" | Add-Content -Path ".\output\deploy.ps1"        
-        "Stop-Service -Name 'W3SVC'" | Add-Content -Path D:\Temp\deploy2.ps1
+        "Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\'" | Add-Content -Path ".\output\deploy.ps1"
+        iisreset WinServ1 /stop | Add-Content -Path D:\Temp\deploy2.ps1
+        #"Stop-Service -Name 'W3SVC'" | Add-Content -Path D:\Temp\deploy2.ps1
         "Copy-Item 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Force" | Add-Content -Path ".\output\deploy.ps1"
-        "Start-Service -Name 'W3SVC'" | Add-Content -Path ".\output\deploy.ps1"
+        iisreset WinServ1 /start | Add-Content -Path D:\Temp\deploy2.ps1
+        #"Start-Service -Name 'W3SVC'" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\*.zip' -Force" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
         $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
