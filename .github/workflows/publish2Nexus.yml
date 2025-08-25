@@ -67,7 +67,7 @@ jobs:
         "Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
         $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
         $Session = New-PSSession -ComputerName "WinServ1" -Credential $cred
-        Invoke-Command -Session $Session -FilePath ".\output\deploy.ps1" -Credential $cred
+        Invoke-Command -FilePath ".\output\deploy.ps1" -Session $Session
         #Invoke-Command -ComputerName "WinServ1" -FilePath ".\output\deploy.ps1" -Credential $cred
 
     #- name: Publish to Nexus
