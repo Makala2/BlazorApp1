@@ -39,7 +39,7 @@ jobs:
         Write-Host $cred        
         $sourcePath = ".\nupkg\"
         Write-Host $sourcePath
-        $destPath = "\\WINSERV1\Temp\"
+        $destPath = "\\192.168.0.121\Temp\"
         Write-Host $destPath
         $password = ConvertTo-SecureString "Aime4274" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
