@@ -31,8 +31,8 @@ jobs:
     - name: publish
       run: |
           New-Item -Path ".\output\" -ItemType Directory
-          dotnet publish -c Release -o ".\output\"
-          Compress-Archive -Path ".\output\" -DestinationPath ".\BlazorApp1.zip"
+          dotnet publish -c Release #-o ".\output\"
+          Compress-Archive -Path "." -DestinationPath ".\BlazorApp1.zip"
 
     #- name: Pack NuGet package
     #  run: dotnet pack --configuration Release --no-build --output .\nupkg
@@ -40,15 +40,17 @@ jobs:
     - name: copy to server
       shell: pwsh
       run: |
-        Import-Module bitstransfer
+        #Import-Module bitstransfer
+        $Session = New-PSSession -ComputerName "WinServ1" -Credential "tansatech\administrator"
         $cred = Get-Credential
         Write-Host $cred        
         $sourcePath = ".\BlazorApp1.zip" #".\nupkg\"
         Write-Host $sourcePath
-        $destPath = "D:\VirtualBox_VMs\Shared\"
+        $destPath = "C:\Temp" #"D:\VirtualBox_VMs\Shared\"
         Write-Host $destPath
-        Start-BitsTransfer -Source $sourcePath -Destination $destPath #-Credential $cred
-        $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
+        Copy-Item $sourcePath -Destination $destPath -ToSession $Session
+        #Start-BitsTransfer -Source $sourcePath -Destination $destPath #-Credential $cred
+        #$cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
         #Get-ChildItem -Path $sourcePath -Filter *.nupkg | ForEach-Object { 
         #  $package = $_.FullName
         #  Write-Host $package
