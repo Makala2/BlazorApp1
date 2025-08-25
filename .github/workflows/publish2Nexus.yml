@@ -65,7 +65,8 @@ jobs:
         "iisreset /start" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\*.zip' -Force" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
-        Invoke-Command -ComputerName "WinServ1" -FilePath ".\output\deploy.ps1"
+        $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
+        Invoke-Command -ComputerName "WinServ1" -FilePath ".\output\deploy.ps1" -Credential $cred
 
     #- name: Publish to Nexus
     #  run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
