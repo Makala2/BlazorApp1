@@ -39,14 +39,14 @@ jobs:
         Write-Host $cred        
         $sourcePath = ".\nupkg\"
         Write-Host $sourcePath
-        $destPath = "Z:\"
+        $destPath = "D:\VirtualBox_VMs\Shared\"
         Write-Host $destPath
         $password = ConvertTo-SecureString "Aime4274" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
         Get-ChildItem -Path $sourcePath -Filter *.nupkg | ForEach-Object { 
           $package = $_.FullName
           Write-Host $package
-          Start-BitsTransfer -Source $package -Destination $destPath -Credential $cred
+          Start-BitsTransfer -Source $package -Destination $destPath #-Credential $cred
         }
 
     #- name: Publish to Nexus
