@@ -30,8 +30,9 @@ jobs:
 
     - name: publish
       run: |
-          dotnet publish BlazorApp1.csproj -c Release -o .\output\
-          Compress-Archive -Path .\output -DestinationPath .\BlazorApp1.zip
+          #New-Item -Path ".\output" -ItemType Directory
+          dotnet publish BlazorApp1.csproj -c Release -o ".\output\"
+          Compress-Archive -Path ".\output" -DestinationPath ".\BlazorApp1.zip"
 
     #- name: Pack NuGet package
     #  run: dotnet pack --configuration Release --no-build --output .\nupkg
@@ -42,7 +43,7 @@ jobs:
         Import-Module bitstransfer
         $cred = Get-Credential
         Write-Host $cred        
-        $sourcePath = .\BlazorApp1.zip #".\nupkg\"
+        $sourcePath = ".\BlazorApp1.zip" #".\nupkg\"
         Write-Host $sourcePath
         $destPath = "D:\VirtualBox_VMs\Shared\"
         Write-Host $destPath
