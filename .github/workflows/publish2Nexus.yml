@@ -35,7 +35,7 @@ jobs:
       run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
       env:
         # Use either username/password or an API key with the Nexus endpoint
-        NUGET_PUSH_API_KEY: ${{ secrets.NEXUS_API_KEY }} 
+        NUGET_PUSH_API_KEY: 984cf249-86d5-3861-83e0-d690ca3e1a5c
         # Alternatively, for username and password authentication, you can use a NuGet.Config file
       
     #- name: Test
