@@ -58,7 +58,15 @@ jobs:
 
     - name: deploy to iis
       shell: pwsh
-      run: Invoke-Command -ComputerName "WinServ1" -FilePath "deploy.ps1"
+      run: |
+        $script = "Expand-Archive -Path \"C:\\Temp\\*.zip" -DestinationPath \"C:\\Temp\\BlazorApp1\\\"
+                  iisreset \/stop
+                  Copy-Item \"C:\\Temp\\BlazorApp1\\*\" -Destination \"C:\\BlazorApp1\\\" -Force
+                  iisreset \/start
+                  Remove-Item -Path \"C:\\Temp\\*.zip" -Force
+                  Remove-Item -Path \"C:\\Temp\\BlazorApp1\\" -Recurse -Force"
+        Write-Host $script
+        #Invoke-Command -ComputerName "WinServ1" -FilePath "deploy.ps1"
 
     #- name: Publish to Nexus
     #  run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
