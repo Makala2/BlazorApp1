@@ -39,7 +39,7 @@ jobs:
         Write-Host $cred        
         $sourcePath = ".\nupkg\"
         Write-Host $sourcePath
-        $destPath = "\\WINSERV1\Temp"
+        $destPath = "\\WINSERV1\Temp\"
         Write-Host $destPath
         Get-ChildItem -Path $sourcePath -Filter *.nupkg | ForEach-Object { 
           $package = $_.FullName
