@@ -59,14 +59,13 @@ jobs:
     - name: deploy to iis
       shell: pwsh
       run: |
-        $script = "Expand-Archive -Path '"C:\Temp\*.zip"' -DestinationPath '"C:\Temp\BlazorApp1\"' \n
-                  iisreset /stop \n
-                  Copy-Item '"C:\Temp\BlazorApp1\*"' -Destination '"C:\BlazorApp1\"' -Force
-                  iisreset /start \n
-                  Remove-Item -Path '"C:\Temp\*.zip"' -Force
-                  Remove-Item -Path '"C:\Temp\BlazorApp1\"' -Recurse -Force"
-        Write-Host $script
-        #Invoke-Command -ComputerName "WinServ1" -FilePath $script
+        "Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\'" | Add-Content -Path ".\output\deploy.ps1"
+        "iisreset /stop" | Add-Content -Path D:\Temp\deploy2.ps1
+        "Copy-Item 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Force" | Add-Content -Path ".\output\deploy.ps1"
+        "iisreset /start" | Add-Content -Path ".\output\deploy.ps1"
+        "Remove-Item -Path 'C:\Temp\*.zip' -Force" | Add-Content -Path ".\output\deploy.ps1"
+        "Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
+        Invoke-Command -ComputerName "WinServ1" -FilePath ".\output\deploy.ps1"
 
     #- name: Publish to Nexus
     #  run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
