@@ -76,8 +76,8 @@ jobs:
         Invoke-Command -ScriptBlock { iisreset ${{ vars.SERV }} /stop } -Session $Session
         Invoke-Command -ScriptBlock { Copy-Item -Path 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Recurse -Force  } -Session $Session
         Invoke-Command -ScriptBlock { iisreset ${{ vars.SERV }} /start } -Session $Session
-        #Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\*.zip' -Force } -Session $Session
-        #Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force } -Session $Session
+        Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\*.zip' -Force } -Session $Session
+        Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force } -Session $Session
 
     #- name: Publish to Nexus
     #  run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
