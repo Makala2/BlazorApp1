@@ -44,7 +44,6 @@ jobs:
         #Import-Module bitstransfer
         $user = "${{ secrets.USER }}"
         $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
-        Write-Host "password: $pass"
         $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
         $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred       
         $sourcePath = ".\BlazorApp1.zip" 
@@ -69,7 +68,9 @@ jobs:
         #"Start-Service -Name 'W3SVC'" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\*.zip' -Force" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
-        $cred = New-Object System.Management.Automation.PSCredential(${{ secrets.USER }}, ${{ secrets.PASSWORD }})
+        $user = "${{ secrets.USER }}"
+        $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
         $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred
         Invoke-Command -FilePath ".\output\deploy.ps1" -Session $Session
         #Invoke-Command -ComputerName ${{ vars.SERV }} -FilePath ".\output\deploy.ps1" -Credential $cred
