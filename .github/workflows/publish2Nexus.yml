@@ -12,8 +12,7 @@ on:
 jobs:
   build-and-publish:
     runs-on: [self-hosted, Windows, X64]
-    env: 
-      SRV: ${{ vars.SERV }}
+    environment: Dev 
 
     steps:
     - name: Checkout code
@@ -47,7 +46,7 @@ jobs:
         $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
         Write-Host "password: $pass"
         $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
-        $Session = New-PSSession -ComputerName $SRV -Credential $cred       
+        $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred       
         $sourcePath = ".\BlazorApp1.zip" 
         $destPath = "C:\Temp\" 
         Copy-Item $sourcePath -Destination $destPath -ToSession $Session
