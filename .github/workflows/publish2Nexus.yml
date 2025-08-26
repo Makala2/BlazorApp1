@@ -43,7 +43,7 @@ jobs:
         #Import-Module bitstransfer
         $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
         Write-Host "password: $pass"
-        $cred = New-Object System.Management.Automation.PSCredential(${{ secrets.USER }}, ConvertTo-SecureString "Aime4274" -AsPlainText -Force)
+        $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", $pass)
         $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred       
         $sourcePath = ".\BlazorApp1.zip" 
         $destPath = "C:\Temp\" 
