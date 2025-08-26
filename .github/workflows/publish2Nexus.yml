@@ -41,13 +41,13 @@ jobs:
       shell: pwsh
       run: |
         #Import-Module bitstransfer
-        $cred = New-Object System.Management.Automation.PSCredential(${{ secrets.USER }}, (ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force))
+        $cred = New-Object System.Management.Automation.PSCredential(${{ secrets.USER }}, (ConvertTo-SecureString ${{ secrets.PASSWORD }} -Force))
         $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred       
         $sourcePath = ".\BlazorApp1.zip" 
         $destPath = "C:\Temp\" 
         Copy-Item $sourcePath -Destination $destPath -ToSession $Session
         #Start-BitsTransfer -Source $sourcePath -Destination $destPath #-Credential $cred
-        #$cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
+        #$cred = New-Object System.Management.Automation.PSCredential(${{ secrets.USER }}, (ConvertTo-SecureString ${{ secrets.PASSWORD }} -Force))
         #Get-ChildItem -Path $sourcePath -Filter *.nupkg | ForEach-Object { 
         #  $package = $_.FullName
         #  Write-Host $package
@@ -65,7 +65,7 @@ jobs:
         #"Start-Service -Name 'W3SVC'" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\*.zip' -Force" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
-        #$cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", (ConvertTo-SecureString "Aime4274" -AsPlainText -Force))
+        $cred = New-Object System.Management.Automation.PSCredential(${{ secrets.USER }}, (ConvertTo-SecureString ${{ secrets.PASSWORD }} -Force))
         $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred
         Invoke-Command -FilePath ".\output\deploy.ps1" -Session $Session
         #Invoke-Command -ComputerName ${{ vars.SERV }} -FilePath ".\output\deploy.ps1" -Credential $cred
