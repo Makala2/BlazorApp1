@@ -77,7 +77,7 @@ jobs:
         Invoke-Command -ScriptBlock { Copy-Item -Path 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Recurse -Force  } -Session $Session
         Invoke-Command -ScriptBlock { iisreset ${{ vars.SERV }} /start } -Session $Session
         Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\*.zip' -Force } -Session $Session
-        Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" } -Session $Session
+        Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force } -Session $Session
         #Invoke-Command -FilePath ".\output\deploy.ps1" -Session $Session
         #Invoke-Command -ComputerName ${{ vars.SERV }} -FilePath ".\output\deploy.ps1" -Credential $cred
 
