@@ -41,7 +41,8 @@ jobs:
       shell: pwsh
       run: |
         #Import-Module bitstransfer
-        $pass = ConvertTo-SecureString -String ${{ secrets.PASSWORD }}
+        $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
+        Write-Host $pass
         $cred = New-Object System.Management.Automation.PSCredential(${{ secrets.USER }}, $pass)
         $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred       
         $sourcePath = ".\BlazorApp1.zip" 
