@@ -12,6 +12,8 @@ on:
 jobs:
   build-and-publish:
     runs-on: [self-hosted, Windows, X64]
+    env: 
+      SRV: ${{ vars.SERV }}
 
     steps:
     - name: Checkout code
@@ -41,10 +43,11 @@ jobs:
       shell: pwsh
       run: |
         #Import-Module bitstransfer
+        $user = ${{ secrets.USER }}
         $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
         Write-Host "password: $pass"
-        $cred = New-Object System.Management.Automation.PSCredential("WinServ1\tchapda", $pass)
-        $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred       
+        $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
+        $Session = New-PSSession -ComputerName $SRV -Credential $cred       
         $sourcePath = ".\BlazorApp1.zip" 
         $destPath = "C:\Temp\" 
         Copy-Item $sourcePath -Destination $destPath -ToSession $Session
