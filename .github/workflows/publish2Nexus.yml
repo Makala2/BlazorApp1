@@ -63,7 +63,7 @@ jobs:
         "Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\' -Force" | Add-Content -Path ".\output\deploy.ps1"
         iisreset ${{ vars.SERV }} /stop | Add-Content -Path D:\Temp\deploy2.ps1
         #"Stop-Service -Name 'W3SVC'" | Add-Content -Path D:\Temp\deploy2.ps1
-        "Copy-Item $sourcePath 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
+        "Copy-Item 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
         iisreset ${{ vars.SERV }} /start | Add-Content -Path D:\Temp\deploy2.ps1
         #"Start-Service -Name 'W3SVC'" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\*.zip' -Force" | Add-Content -Path ".\output\deploy.ps1"
@@ -74,7 +74,7 @@ jobs:
         $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred
         Invoke-Command -ScriptBlock { Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\' -Force } -Session $Session
         Invoke-Command -ScriptBlock { iisreset ${{ vars.SERV }} /stop } -Session $Session
-        Invoke-Command -ScriptBlock { Copy-Item $sourcePath 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Recurse -Force"  } -Session $Session
+        Invoke-Command -ScriptBlock { Copy-Item 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Recurse -Force"  } -Session $Session
         Invoke-Command -ScriptBlock { iisreset ${{ vars.SERV }} /start } -Session $Session
         Invoke-Command -ScriptBlock { "Remove-Item -Path 'C:\Temp\*.zip' -Force" } -Session $Session
         Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" } -Session $Session
