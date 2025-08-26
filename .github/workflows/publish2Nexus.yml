@@ -72,7 +72,13 @@ jobs:
         $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
         $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred
-        Invoke-Command -FilePath ".\output\deploy.ps1" -Session $Session
+        Invoke-Command -ScriptBlock { Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\' } -Session $Session
+        Invoke-Command -ScriptBlock { iisreset ${{ vars.SERV }} /stop } -Session $Session
+        Invoke-Command -ScriptBlock { Copy-Item 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Force" } -Session $Session
+        Invoke-Command -ScriptBlock { iisreset ${{ vars.SERV }} /start } -Session $Session
+        Invoke-Command -ScriptBlock { "Remove-Item -Path 'C:\Temp\*.zip' -Force" } -Session $Session
+        Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" } -Session $Session
+        #Invoke-Command -FilePath ".\output\deploy.ps1" -Session $Session
         #Invoke-Command -ComputerName ${{ vars.SERV }} -FilePath ".\output\deploy.ps1" -Credential $cred
 
     #- name: Publish to Nexus
