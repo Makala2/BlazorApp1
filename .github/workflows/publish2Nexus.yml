@@ -68,8 +68,8 @@ jobs:
         #"Start-Service -Name 'W3SVC'" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\*.zip' -Force" | Add-Content -Path ".\output\deploy.ps1"
         "Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
-        $user = "${{ secrets.USER }}"
-        $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
+        $user = "WinServ1\Administrator" #"${{ secrets.USER }}"
+        $pass = ConvertTo-SecureString "Aime4274" -AsPlainText -Force
         $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
         $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred
         Invoke-Command -ScriptBlock { Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\' -Force } -Session $Session
