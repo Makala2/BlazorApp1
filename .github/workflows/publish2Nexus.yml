@@ -43,7 +43,7 @@ jobs:
       shell: pwsh
       run: |
         #Import-Module bitstransfer
-        $user = ${{ secrets.USER }}
+        $user = "${{ secrets.USER }}"
         $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
         Write-Host "password: $pass"
         $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
