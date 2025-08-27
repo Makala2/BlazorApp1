@@ -21,7 +21,7 @@ jobs:
         #echo $input
         echo $input.host
         echo "DEVSRV=$input.host"
-        echo "DEVSRV=$input.host" >> $GITHUB_ENV
+        echo "DEVSRV=${{ $input.host }}" >> $GITHUB_ENV
 
     - name: print DevSrv
       run: |
