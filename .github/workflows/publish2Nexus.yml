@@ -12,6 +12,7 @@ on:
 jobs:
   build-and-publish:
     runs-on: [self-hosted, Windows, X64]
+    environment: Dev 
 
     steps:
     - name: Checkout code
@@ -26,17 +27,61 @@ jobs:
       run: dotnet restore
       
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore        
 
-    - name: Pack NuGet package
-      run: dotnet pack --configuration Release --no-build --output .\nupkg
+    - name: publish
+      run: |
+          New-Item -Path ".\output\" -ItemType Directory
+          dotnet publish -c Release -o ".\output\"
+          Compress-Archive -Path ".\output\*" -DestinationPath ".\BlazorApp1.zip"
 
-    - name: Publish to Nexus
-      run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
-      env:
-        # Use either username/password or an API key with the Nexus endpoint
-        NUGET_PUSH_API_KEY: ${{ secrets.NEXUS_API_KEY }} 
-        # Alternatively, for username and password authentication, you can use a NuGet.Config file
-      
+    #- name: Pack NuGet package
+    #  run: dotnet pack --configuration Release --no-build --output .\nupkg
+
+    - name: copy to server
+      shell: pwsh
+      run: |
+        #Import-Module bitstransfer
+        $user = "${{ secrets.USER }}"
+        $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
+        $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred       
+        $sourcePath = ".\BlazorApp1.zip" 
+        $destPath = "C:\Temp\" 
+        Copy-Item $sourcePath -Destination $destPath -ToSession $Session
+        #Start-BitsTransfer -Source $sourcePath -Destination $destPath #-Credential $cred
+        #$cred = New-Object System.Management.Automation.PSCredential(${{ secrets.USER }}, (ConvertTo-SecureString ${{ secrets.PASSWORD }} -Force))
+        #Get-ChildItem -Path $sourcePath -Filter *.nupkg | ForEach-Object { 
+        #  $package = $_.FullName
+        #  Write-Host $package
+        #  Start-BitsTransfer -Source $package -Destination $destPath #-Credential $cred
+        #}
+
+    - name: deploy to iis
+      shell: pwsh
+      run: |
+        "Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\' -Force" | Add-Content -Path ".\output\deploy.ps1"
+        iisreset ${{ vars.SERV }} /stop | Add-Content -Path D:\Temp\deploy2.ps1
+        #"Stop-Service -Name 'W3SVC'" | Add-Content -Path D:\Temp\deploy2.ps1
+        "Copy-Item 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
+        iisreset ${{ vars.SERV }} /start | Add-Content -Path D:\Temp\deploy2.ps1
+        #"Start-Service -Name 'W3SVC'" | Add-Content -Path ".\output\deploy.ps1"
+        "Remove-Item -Path 'C:\Temp\*.zip' -Force" | Add-Content -Path ".\output\deploy.ps1"
+        "Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
+        $user = "WinServ1\Administrator" #"${{ secrets.USER }}"
+        $pass = ConvertTo-SecureString "Aime4274" -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
+        $Session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred
+        Invoke-Command -ScriptBlock { Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\' -Force } -Session $Session
+        Invoke-Command -ScriptBlock { iisreset ${{ vars.SERV }} /stop } -Session $Session
+        Invoke-Command -ScriptBlock { Copy-Item -Path 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Recurse -Force  } -Session $Session
+        Invoke-Command -ScriptBlock { iisreset ${{ vars.SERV }} /start } -Session $Session
+        Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\*.zip' -Force } -Session $Session
+        Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force } -Session $Session
+      continue-on-error: true
+
+    #- name: Publish to Nexus
+    #  run: dotnet nuget push ".\nupkg\*.nupkg" --source http://localhost:8081/repository/MyNuget/ --api-key 984cf249-86d5-3861-83e0-d690ca3e1a5c
+
     #- name: Test
     #  run: dotnet test --no-build --verbosity normal
