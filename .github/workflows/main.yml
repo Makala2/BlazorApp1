@@ -18,7 +18,7 @@ jobs:
     - name: read json info
       id: get_json
       run: |
-        $root = "${{ github.workspace }}"
+        $root = "${{ github.ref_name }}"
         Write-Host $root
         content = $(Get-Content $root\.github\workflows\config\target.json)
         
