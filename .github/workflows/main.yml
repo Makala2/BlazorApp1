@@ -12,8 +12,13 @@ jobs:
     environment: Dev 
 
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
     - name: read json info
       id: get_json
       run: |
-        BRANCH = "${{ github.ref_name }}"
-        echo: "Current branch: $BRANCH"
+        $root = "${{ github.workspace }}"
+        Write-Host $root
+        content = $(Get-Content $root\.github\workflows\config\target.json)
+        
