@@ -13,16 +13,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4   
+    
     - name: read json info
       #id: get_json
       run: |
         $input = Get-Content -Path ".\.github\workflows\config\target.json" | ConvertFrom-Json
-        echo $input
+        #echo $input
         echo $input.host
-        echo "DEVSRV="$input.host >> $GITHUB_ENV
+        echo "DEVSRV=$input.host"
+        echo "DEVSRV=$input.host" >> $GITHUB_ENV
 
     - name: print DevSrv
       run: |
-        Write-Host "Delopment Server ${{ env.DEVSRV }}"
-        Write-Host "Delopment Server $DEVSRV"
+        Write-Host "Development Server ${{ env.DEVSRV }}"
+        Write-Host "Development Server $DEVSRV"
         
