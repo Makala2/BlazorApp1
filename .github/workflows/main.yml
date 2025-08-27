@@ -9,7 +9,6 @@ on:
 jobs:
   parse-json-file:
     runs-on: [self-hosted, Windows, X64] 
-    #environment: Dev 
 
     steps:
     - uses: actions/checkout@v4   
@@ -21,7 +20,7 @@ jobs:
         #echo $input
         echo $input.host
         echo "DEVSRV=$input.host"
-        echo "DEVSRV=${{ $input.host }}" >> $GITHUB_ENV
+        echo "DEVSRV=$input.host" >> $GITHUB_ENV
 
     - name: print DevSrv
       run: |
