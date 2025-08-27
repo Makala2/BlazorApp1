@@ -4,8 +4,9 @@
 name: build publish deploy
 
 on:
-  push:
-    branches: [ "master" ]
+  workflow_dispatch
+  #push:
+  #  branches: [ "master" ]
   #pull_request:
     #branches: [ "master" ]
 
