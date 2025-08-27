@@ -12,13 +12,11 @@ jobs:
     environment: Dev 
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-    
+    - uses: actions/checkout@v4   
     - name: read json info
       id: get_json
       run: |
         $root = "${{ github.ref_name }}"
         Write-Host $root
-        content = $(Get-Content $root\.github\workflows\config\target.json)
+        content = $(Get-Content .\.github\workflows\config\target.json)
         
