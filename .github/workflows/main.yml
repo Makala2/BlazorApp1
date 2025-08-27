@@ -18,5 +18,6 @@ jobs:
       run: |
         $root = "${{ github.ref_name }}"
         Write-Host $root
-        Get-Content -Path ".\.github\workflows\config\target.json" | ConvertFrom-Json
+        $input = Get-Content -Path ".\.github\workflows\config\target.json" | ConvertFrom-Json
+        Write-Host $input.host
         
