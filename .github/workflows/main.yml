@@ -8,8 +8,8 @@ on:
 
 jobs:
   parse-json-file:
-    runs-on: [self-hosted, Windows, X64]
-    environment: Dev 
+    runs-on: [self-hosted, Windows, X64] 
+    #environment: Dev 
 
     steps:
     - uses: actions/checkout@v4   
