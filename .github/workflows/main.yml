@@ -1,0 +1,19 @@
+name: parse json
+
+on:
+  push:
+    branches: [ "master" ]
+  #pull_request:
+  #  branches: [ "master" ]
+
+jobs:
+  parse-json-file:
+    runs-on: [self-hosted, Windows, X64]
+    environment: Dev 
+
+    steps:
+    - name: read json info
+      id: get_json
+      run: |
+        BRANCH = "${{ github.ref_name }}"
+        echo: "Current branch: $BRANCH"
