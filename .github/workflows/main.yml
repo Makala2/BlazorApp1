@@ -23,11 +23,13 @@ jobs:
         echo $host
         $hostVal = $input.host
         echo $hostVal 
-        echo "DEVSRV=$hostVal"
-        echo "DEVSRV=$hostVal" >> $GITHUB_ENV
+        #$DVSRV=$hostVal
+        #echo "DVSRV=$hostVal" >> $GITHUB_ENV
+        env:
+          DEVSRV: $hostVal 
 
     - name: print DevSrv
       run: |
-        Write-Host "Development Server ${{ env.DEVSRV }}"
-        Write-Host "Development Server $DEVSRV"
+        Write-Host "Development Server ${{ env.DVSRV }}"
+        Write-Host "Development Server $DVSRV"
         
