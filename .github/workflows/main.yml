@@ -24,12 +24,12 @@ jobs:
         $hostVal = $input.host
         echo $hostVal 
         echo "outVal=$hostVal"
-        echo "outVal=$hostVal" >> $env:GITHUB_OUTPUT
+        echo "outVal=$hostVal" >> $env:GITHUB_ENV
 
     - name: print DevSrv
-      env:
-        DVSRV: ${{ steps.get_json.outputs.outVal }}
+      #env:
+      #  DVSRV: ${{ steps.get_json.outputs.outVal }}
       run: |
-        echo "Development Server: ${{ steps.get_json.outputs.outVal }}"
-        echo "Development Server: ${{ env.DVSRV }}"
+        #echo "Development Server: ${{ steps.get_json.outputs.outVal }}"
+        echo "Development Server: ${{ env.outVal }}"
         
