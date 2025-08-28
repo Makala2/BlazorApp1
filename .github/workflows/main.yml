@@ -9,7 +9,8 @@ on:
 jobs:
   parse-json-file:
     runs-on: [self-hosted, Windows, X64] 
-    env: ${{ $GITHUB_ENV }}
+    #env: 
+    #  ENV: $GITHUB_ENV
 
     steps:
     - uses: actions/checkout@v4   
@@ -18,10 +19,10 @@ jobs:
       #id: get_json
       run: |
         $input = Get-Content -Path ".\.github\workflows\config\target.json" | ConvertFrom-Json
-        #echo $input
-        echo $input.host
-        echo DEVSRV=$input.host
-        echo DEVSRV=$input.host >> $GITHUB_ENV
+        Write-Host ($input | ConvertFrom-Json).host
+        Write-Host $input.data.host 
+        Write-Host DEVSRV=$input.host
+        Write-Host DEVSRV=$input | ConvertFrom-Json .host >> $GITHUB_ENV
 
     - name: print DevSrv
       run: |
