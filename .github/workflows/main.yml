@@ -15,20 +15,21 @@ jobs:
     steps:
     - uses: actions/checkout@v4   
     
-    - name: read json info
+    - name: read json info      
       id: get_json
+      shell: pwsh
       run: |
         $input = Get-Content -Path ".\.github\workflows\config\target.json" | ConvertFrom-Json
         echo $input.host
         $hostVal = $input.host
         echo $hostVal 
         echo "outVal=$hostVal"
-        echo "outVal=$hostVal" >> $GITHUB_OUTPUT
+        echo "outVal=$hostVal" >> $env:GITHUB_OUTPUT
 
     - name: print DevSrv
-      env:
-        DVSRV: ${{ steps.get_json.outputs.outVal }}
+      #env:
+      #  DVSRV: ${{ steps.get_json.outputs.outVal }}
       run: |
-        Write-Host "Development Server: ${{ steps.get_json.outputs.outVal }}"
-        Write-Host "Development Server: $DVSRV"
+        echo "Development Server: ${{ steps.get_json.outputs.outVal }}"
+        echo "Development Server: $DVSRV"
         
