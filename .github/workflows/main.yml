@@ -9,6 +9,7 @@ on:
 jobs:
   parse-json-file:
     runs-on: [self-hosted, Windows, X64] 
+    env: ${{ $GITHUB_ENV }}
 
     steps:
     - uses: actions/checkout@v4   
