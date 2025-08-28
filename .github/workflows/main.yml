@@ -19,10 +19,12 @@ jobs:
       #id: get_json
       run: |
         $input = Get-Content -Path ".\.github\workflows\config\target.json" | ConvertFrom-Json
-        $host = $input.host
-        Write-Host $host 
-        echo "DEVSRV=$host"
-        echo "DEVSRV=$host" >> $GITHUB_ENV
+        echo $input.host
+        echo $host
+        $hostVal = $input.host
+        echo $hostVal 
+        echo "DEVSRV=$hostVal"
+        echo "DEVSRV=$hostVal" >> $GITHUB_ENV
 
     - name: print DevSrv
       run: |
