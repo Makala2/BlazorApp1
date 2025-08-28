@@ -31,5 +31,5 @@ jobs:
         DVSRV: ${{ steps.get_json.outputs.outVal }}
       run: |
         echo "Development Server: ${{ steps.get_json.outputs.outVal }}"
-        echo "Development Server: $DVSRV"
+        echo "Development Server: ${{ env.DVSRV }}"
         
