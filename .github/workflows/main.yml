@@ -29,8 +29,8 @@ jobs:
 
     - name: print DevSrv
       env:
-        DVSRV: ${{ steps.get_json.output.outVal }}
+        DVSRV: ${{ steps.get_json.outputs.outVal }}
       run: |
-        Write-Host "Development Server: ${{ steps.get_json.output.outVal }}"
+        Write-Host "Development Server: ${{ steps.get_json.outputs.outVal }}"
         Write-Host "Development Server: $DVSRV"
         
