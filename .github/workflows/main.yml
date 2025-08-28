@@ -22,10 +22,8 @@ jobs:
         echo $input.host
         $hostVal = $input.host
         echo $hostVal 
-        #$DVSRV=$hostVal
-        #echo "outVal=$hostVal" >> "$GITHUB_OUTPUT"
-      env:
-        DEVSRV: $hostVal 
+        echo "outVal=$hostVal"
+        echo "outVal=$hostVal" >> "$GITHUB_OUTPUT"
 
     - name: print DevSrv
       env:
