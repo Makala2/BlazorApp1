@@ -38,8 +38,8 @@ jobs:
       shell: pwsh
       run: |
         Install-Module -Name PSWSMan -Scope CurrentUser -Repository PSGallery -Force
-        $path = "/opt/microsoft/powershell/7/libmi.so"
-        New-Item -Path opt/microsoft/powershell/7/libmi.so -ItemType File -Force
+        $path = "./opt/microsoft/powershell/7/libmi.so"
+        New-Item -Path $path -ItemType File -Force
     #    Install-WSMan
     #    $user = "${{ secrets.USER }}"
     #    $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
@@ -49,9 +49,9 @@ jobs:
     #    $destPath = "C:\Temp\" 
     #    Copy-Item $sourcePath -Destination $destPath -ToSession $session
 
-    - name: give permition to folder
-      shell: bash
-      run: sudo chmod u+rwx "/opt/microsoft/powershell/7/libmi.so"
+    #- name: give permition to folder
+    #  shell: bash
+    #  run: sudo chmod u+rwx "./opt/microsoft/powershell/7/libmi.so"
 
     - name: install WSMan
       shell: pwsh
