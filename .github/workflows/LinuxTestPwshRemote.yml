@@ -38,7 +38,7 @@ jobs:
       shell: pwsh
       run: |
         Install-Module -Name PSWSMan -Scope CurrentUser -Repository PSGallery -Force
-    #    Install-WSMan
+        Install-WSMan -Force
     #    $user = "${{ secrets.USER }}"
     #    $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
     #    $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
