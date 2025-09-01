@@ -51,7 +51,7 @@ jobs:
 
     - name: give permition to folder
       shell: bash
-      run: chmod u+rwx "/opt/microsoft/powershell/7"
+      run: sudo chmod u+rwx "/opt/microsoft/powershell/7"
 
     - name: install WSMan
       shell: pwsh
