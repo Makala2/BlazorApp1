@@ -1,0 +1,70 @@
+name: publish to Nexus
+
+on:
+  push:
+    branches: [ "master" ]
+  #pull_request:
+  #  branches: [ "master" ]
+
+jobs:
+  build-and-publish:
+    runs-on: [self-hosted, Linux, X64]
+    environment: Dev 
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --configuration Release --no-restore        
+
+    - name: publish
+      run: |
+          New-Item -Path ".\output\" -ItemType Directory
+          dotnet publish -c Release -o ".\output\"
+          Compress-Archive -Path ".\output\*" -DestinationPath ".\BlazorApp1.zip"
+
+    - name: copy to server
+      shell: pwsh
+      run: |
+        Install-Module -Name PSWSMan -Scope CurrentUser -Repository PSGallery -Force
+        Install-WSMan
+        $user = "${{ secrets.USER }}"
+        $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
+        $session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred       
+        $sourcePath = ".\BlazorApp1.zip" 
+        $destPath = "C:\Temp\" 
+        Copy-Item $sourcePath -Destination $destPath -ToSession $session
+    
+    - name: deploy to iis
+      shell: pwsh
+      run: |
+        "Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\' -Force" | Add-Content -Path ".\output\deploy.ps1"
+        iisreset ${{ vars.SERV }} /stop | Add-Content -Path D:\Temp\deploy2.ps1
+        #"Stop-Service -Name 'W3SVC'" | Add-Content -Path D:\Temp\deploy2.ps1
+        "Copy-Item 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
+        iisreset ${{ vars.SERV }} /start | Add-Content -Path D:\Temp\deploy2.ps1
+        #"Start-Service -Name 'W3SVC'" | Add-Content -Path ".\output\deploy.ps1"
+        "Remove-Item -Path 'C:\Temp\*.zip' -Force" | Add-Content -Path ".\output\deploy.ps1"
+        "Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force" | Add-Content -Path ".\output\deploy.ps1"
+        $user = "WinServ1\Administrator" #"${{ secrets.USER }}"
+        $pass = ConvertTo-SecureString "Aime4274" -AsPlainText -Force
+        $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
+        $session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred
+        Invoke-Command -Session $session -FilePath ".\output\deploy.ps1"
+        #Invoke-Command -ScriptBlock { Expand-Archive -Path 'C:\Temp\*.zip' -DestinationPath 'C:\Temp\BlazorApp1\' -Force } -Session $Session
+        #Invoke-Command -ScriptBlock { iisreset ${{ vars.SERV }} /stop } -Session $Session
+        #Invoke-Command -ScriptBlock { Copy-Item -Path 'C:\Temp\BlazorApp1\*' -Destination 'C:\BlazorApp1\' -Recurse -Force  } -Session $Session
+        #Invoke-Command -ScriptBlock { iisreset ${{ vars.SERV }} /start } -Session $Session
+        #Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\*.zip' -Force } -Session $Session
+        #Invoke-Command -ScriptBlock { Remove-Item -Path 'C:\Temp\BlazorApp1\' -Recurse -Force } -Session $Session
+      #continue-on-error: true
