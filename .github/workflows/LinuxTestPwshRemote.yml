@@ -38,11 +38,11 @@ jobs:
       shell: pwsh
       run: |
         Install-Module -Name PSWSMan -Scope CurrentUser -Repository PSGallery -Force
-        Install-WSMan
-        $user = "${{ secrets.USER }}"
-        $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
-        $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
-        $session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred       
+    #    Install-WSMan
+    #    $user = "${{ secrets.USER }}"
+    #    $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
+    #    $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
+    #    $session = New-PSSession -ComputerName ${{ vars.SERV }} -Credential $cred       
     #    $sourcePath = ".\BlazorApp1.zip" 
     #    $destPath = "C:\Temp\" 
     #    Copy-Item $sourcePath -Destination $destPath -ToSession $session
