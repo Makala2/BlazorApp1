@@ -34,23 +34,13 @@ jobs:
     #      dotnet publish -c Release -o ".\output\"
     #      Compress-Archive -Path ".\output\*" -DestinationPath ".\BlazorApp1.zip"
 
-    - name: copy to server
+    - name: install PSWSMan
       shell: pwsh
       run: |
         Install-Module -Name PSWSMan #-Scope CurrentUser -Repository PSGallery -Force
-        $FolderPath = "/opt/microsoft/powershell/7/libmi.so"
-        $CurrentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
-        $Acl = Get-Acl -Path $FolderPath
-        $AccessRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
-          $CurrentUser,
-          "FullControl", # Or "Modify", "ReadAndExecute", etc.
-          "ContainerInherit,ObjectInherit",
-          "None",
-          "Allow"
-        )
-        $Acl.AddAccessRule($AccessRule)
-        Set-Acl -Path $FolderPath -AclObject $Acl
-        Install-WSMan
+    #    $FolderPath = "/opt/microsoft/powershell/7/libmi.so"
+
+    #    Install-WSMan
     #    $user = "${{ secrets.USER }}"
     #    $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
     #    $cred = New-Object System.Management.Automation.PSCredential($user, $pass)
@@ -58,3 +48,11 @@ jobs:
     #    $sourcePath = ".\BlazorApp1.zip" 
     #    $destPath = "C:\Temp\" 
     #    Copy-Item $sourcePath -Destination $destPath -ToSession $session
+
+    - name: give permition to folder
+      shell: bash
+      run: chmod u+rwx "/opt/microsoft/powershell/7/libmi.so"
+
+    - name: install WSMan
+      shell: pwsh
+      run: Install-WSMan
