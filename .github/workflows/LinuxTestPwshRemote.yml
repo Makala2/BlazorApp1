@@ -59,7 +59,7 @@ jobs:
     - name: install pywinrm      
       run: | 
         #pip install pywinrm
-        import '\.local/lib/python3.12/site-packages/winrm'
+        import "/home/aime/.local/lib/python3.12/site-packages/winrm"
         session = winrm.Session(
           'http:${{ vars.SERV }}:5985/wsman',
           auth=('${{ secrets.USER }}', '${{ secrets.PASSWORD }}'),
