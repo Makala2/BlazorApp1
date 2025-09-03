@@ -70,13 +70,13 @@ jobs:
     - name: run script remotely
       run: |
         import winrm  
-          session = winrm.Session(
-            'http:${{ vars.SERV }}:5985/wsman',
-            auth=('${{ secrets.USER }}', '${{ secrets.PASSWORD }}'),
-            transport='ntlm',
-            server_cert_validatin='ignore'
-          )
-          result = session.run('iisreset /stop', 'iisreset /start')
-          print("STDOUT:\n", result.std_out.decode())
-          print("STDERR:\n", result.std_err.decode())
+        session = winrm.Session(
+          'http:${{ vars.SERV }}:5985/wsman',
+          auth=('${{ secrets.USER }}', '${{ secrets.PASSWORD }}'),
+          transport='ntlm',
+          server_cert_validatin='ignore'
+        )
+        result = session.run('iisreset /stop', 'iisreset /start')
+        print("STDOUT:\n", result.std_out.decode())
+        print("STDERR:\n", result.std_err.decode())
       shell: python {0}
