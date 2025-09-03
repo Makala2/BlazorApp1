@@ -71,7 +71,7 @@ jobs:
       run: |
         import winrm  
         session = winrm.Session(
-          'http:${{ vars.SERV }}:5985/wsman',
+          '${{ vars.SERV }}',
           auth=('${{ secrets.USER }}', '${{ secrets.PASSWORD }}'),
           transport='ntlm',
           server_cert_validation='ignore'
