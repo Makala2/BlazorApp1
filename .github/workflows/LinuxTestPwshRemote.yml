@@ -58,7 +58,7 @@ jobs:
     #  run: Install-WSMan
     - name: install pywinrm      
       run: | 
-        pip install pywinrm
+        #pip install pywinrm
         import winrm
         session = winrm.Session(
           'http:${{ vars.SERV }}:5985/wsman',
