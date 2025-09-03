@@ -34,12 +34,12 @@ jobs:
     #      dotnet publish -c Release -o ".\output\"
     #      Compress-Archive -Path ".\output\*" -DestinationPath ".\BlazorApp1.zip"
 
-    - name: install PSWSMan
-      shell: pwsh
-      run: |
-        Install-Module -Name PSWSMan -Scope CurrentUser -Repository PSGallery -Force
-        $path = "./opt/microsoft/powershell/7/libmi.so"
-        New-Item -Path $path -ItemType File -Force
+    #- name: install PSWSMan
+    #  shell: pwsh
+    #  run: |
+    #    Install-Module -Name PSWSMan -Scope CurrentUser -Repository PSGallery -Force
+    #    $path = "./opt/microsoft/powershell/7/libmi.so"
+    #    New-Item -Path $path -ItemType File -Force
     #    Install-WSMan
     #    $user = "${{ secrets.USER }}"
     #    $pass = ConvertTo-SecureString ${{ secrets.PASSWORD }} -AsPlainText -Force
@@ -53,6 +53,20 @@ jobs:
     #  shell: bash
     #  run: sudo chmod u+rwx "./opt/microsoft/powershell/7/libmi.so"
 
-    - name: install WSMan
-      shell: pwsh
-      run: Install-WSMan
+    #- name: install WSMan
+    #  shell: pwsh
+    #  run: Install-WSMan
+    - name: install pywinrm
+      shell: bash
+      run: | 
+        pip install pywinrm
+        import winrm
+        session = winrm.Session(
+          'http:${{ vars.SERV }}:5985/wsman',
+          auth=('${{ secrets.USER }', '${{ secrets.PASSWORD }}'),
+          transport='ntlm',
+          server_cert_validatin='ignore'
+        )
+        result = session.run('iisreset /stop', 'iisreset /start')
+        print("STDOUT:\n", result.std_out.decode())
+        print("STDERR:\n", result.std_err.decode())
