@@ -76,7 +76,7 @@ jobs:
           transport='ntlm',
           server_cert_validation='ignore'
         )
-        result = session.run_ps('iisreset /stop', 'iisreset /start')
+        result = session.run_ps('iisreset /stop'; 'iisreset /start')
         print("STDOUT:\n", result.std_out.decode())
         print("STDERR:\n", result.std_err.decode())
       shell: python {0}
