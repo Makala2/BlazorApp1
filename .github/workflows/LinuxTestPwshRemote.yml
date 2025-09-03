@@ -74,7 +74,7 @@ jobs:
           'http:${{ vars.SERV }}:5985/wsman',
           auth=('${{ secrets.USER }}', '${{ secrets.PASSWORD }}'),
           transport='ntlm',
-          server_cert_validatin='ignore'
+          server_cert_validation='ignore'
         )
         result = session.run('iisreset /stop', 'iisreset /start')
         print("STDOUT:\n", result.std_out.decode())
