@@ -56,8 +56,7 @@ jobs:
     #- name: install WSMan
     #  shell: pwsh
     #  run: Install-WSMan
-    - name: install pywinrm
-      shell: bash
+    - name: install pywinrm      
       run: | 
         pip install pywinrm
         import winrm
@@ -70,3 +69,4 @@ jobs:
         result = session.run('iisreset /stop', 'iisreset /start')
         print("STDOUT:\n", result.std_out.decode())
         print("STDERR:\n", result.std_err.decode())
+      shell: python {0}
